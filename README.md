@@ -9,17 +9,22 @@ Production
 
 TBDeployed
 
-~~[GitHub Pages](https://jessechen.github.io/sourdough/sourdough.html)~~
+~~[GitHub Pages](https://jessechen.github.io/sourdough)~~
 
 Prior Art
 ---------
 
 * TK
 
-Setup
------
+Dev Setup
+---------
 
 `python3 -m http.server`
+
+Deployment
+----------
+
+The `trunk` branch is continuously deployed
 
 License
 -------
