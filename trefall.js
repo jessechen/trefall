@@ -92,11 +92,17 @@ class Grid {
             return true;
         }
     }
+
+    collapse() {
+        let iteration = 0;
+        while(this.step()) {
+            iteration++;
+            console.log(`iteration #${iteration}`);
+        }
+    }
 }
 
 const grid = new Grid(3);
 grid.set(4, new Coords(2, 0, 1));
+grid.collapse();
 console.log(grid.internal[0]);
-console.log(grid.step());
-console.log(grid.internal[0]);
-console.log(grid.step());
