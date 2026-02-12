@@ -13,11 +13,11 @@ class Coords {
 }
 
 class Grid {
-    constructor(side) {
+    constructor(side, initialValue = 0) {
         this.side = side;
         this.internal = [];
         for (let i = 0; i < side * 2; i++) {
-            this.internal[i] =  new Array(side * 4).fill(0);
+            this.internal[i] =  new Array(side * 4).fill(initialValue);
         }
     }
 
@@ -42,6 +42,10 @@ class Grid {
     }
 
     isInside(coords) {
+        if (coords.x < 0) { return false; }
+        if (coords.x >= this.side * 2) { return false; }
+        if (coords.y < 0) { return false; }
+        if (coords.y >= this.side * 2) { return false; }
         const q = coords.x + coords.y;
         if (q < this.side - 1) { return false; }
         if (q === this.side - 1) { return !!coords.w; }
@@ -103,19 +107,20 @@ class Grid {
         let iteration = 0;
         while(this.step()) {
             iteration++;
-            console.log(`Iteration #${iteration}`);
+            if (iteration % 10 === 0) {
+                console.log(`Iteration #${iteration}`)
+            };
         }
-    }
-
-    identity() {
-        // algorithm is collapse(2 * threshold - collapse(2 * threshold))
-        // source: https://fse.studenttheses.ub.rug.nl/21391/1/bMath_2020_DomanN.pdf
-
-        // TODO: IMPLEMENT ME
     }
 }
 
-const grid = new Grid(3);
-grid.set(4, new Coords(2, 0, 1));
-grid.collapse();
-console.log(grid.internal[0]);
+const identity = function(side) {
+    // algorithm is collapse(2 * threshold - collapse(2 * threshold))
+    // source: https://fse.studenttheses.ub.rug.nl/21391/1/bMath_2020_DomanN.pdf
+
+    const grid = new Grid(side, TOPPLE_THRESHOLD * 2);
+    grid.collapse();
+    return grid;
+}
+
+console.log(identity(3).internal[0]);
