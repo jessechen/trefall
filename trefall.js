@@ -24,7 +24,7 @@ class Grid {
             console.error(`Getting ${coords} is not inside!`)
             return 0;
         }
-        return this.internal[y][x * 2 + w];
+        return this.internal[coords.y][coords.x * 2 + coords.w];
     }
 
     set(value, coords) {
@@ -33,6 +33,10 @@ class Grid {
             return 0;
         }
         this.internal[coords.y][coords.x * 2 + coords.w] = value;
+    }
+
+    increment(coords) {
+        this.set(this.get(coords) + 1, coords);
     }
 
     isInside(coords) {
@@ -61,7 +65,34 @@ class Grid {
         }
         return result;
     }
+
+    step() {
+        for (let j = 0; j < this.side * 2; j++) {
+            for (let i = 0; i < this.side * 2; i++) {
+                this.topple(new Coords(i, j, 0));
+                this.topple(new Coords(i, j, 1));
+            }
+        }
+    }
+
+    topple(coords) {
+        if(!this.isInside(coords)) {
+            return;
+        }
+        const val = (this.get(coords));
+        if (val <= 3) {
+            return;
+        } else {
+            this.set(val - 3, coords);
+            for (let neighbor of this.neighbors(coords)) {
+                this.increment(neighbor);
+            }
+        }
+    }
 }
 
 const grid = new Grid(3);
-console.log(grid.neighbors(new Coords(2, 0, 1)));
+grid.set(4, new Coords(2, 0, 1));
+console.log(grid.internal[0]);
+grid.step();
+console.log(grid.internal[0]);
