@@ -67,26 +67,29 @@ class Grid {
     }
 
     step() {
+        let dirty = false;
         for (let j = 0; j < this.side * 2; j++) {
             for (let i = 0; i < this.side * 2; i++) {
-                this.topple(new Coords(i, j, 0));
-                this.topple(new Coords(i, j, 1));
+                dirty ||= this.topple(new Coords(i, j, 0));
+                dirty ||= this.topple(new Coords(i, j, 1));
             }
         }
+        return dirty;
     }
 
     topple(coords) {
         if(!this.isInside(coords)) {
-            return;
+            return false;
         }
         const val = (this.get(coords));
         if (val <= 3) {
-            return;
+            return false;
         } else {
             this.set(val - 3, coords);
             for (let neighbor of this.neighbors(coords)) {
                 this.increment(neighbor);
             }
+            return true;
         }
     }
 }
@@ -94,5 +97,6 @@ class Grid {
 const grid = new Grid(3);
 grid.set(4, new Coords(2, 0, 1));
 console.log(grid.internal[0]);
-grid.step();
+console.log(grid.step());
 console.log(grid.internal[0]);
+console.log(grid.step());
