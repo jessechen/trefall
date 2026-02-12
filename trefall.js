@@ -41,6 +41,10 @@ class Grid {
         this.set(this.get(coords) + 1, coords);
     }
 
+    subtract(value, coords) {
+        this.set(this.get(coords) - value, coords);
+    }
+
     isInside(coords) {
         if (coords.x < 0) { return false; }
         if (coords.x >= this.side * 2) { return false; }
@@ -63,6 +67,10 @@ class Grid {
             }
         }
         return result.filter((coord) => this.isInside(coord));
+    }
+
+    minus(other) {
+        this.allCoords().forEach((coord) => this.subtract(other.get(coord), coord));
     }
 
     neighbors(coords) {
@@ -118,9 +126,18 @@ const identity = function(side) {
     // algorithm is collapse(2 * threshold - collapse(2 * threshold))
     // source: https://fse.studenttheses.ub.rug.nl/21391/1/bMath_2020_DomanN.pdf
 
-    const grid = new Grid(side, TOPPLE_THRESHOLD * 2);
-    grid.collapse();
-    return grid;
+    const twicemax = new Grid(side, 2 * TOPPLE_THRESHOLD);
+    const subtrahend = new Grid(side, 2 * TOPPLE_THRESHOLD);
+    subtrahend.collapse();
+    twicemax.minus(subtrahend);
+    twicemax.collapse();
+    return twicemax;
 }
 
-console.log(identity(3).internal[0]);
+const result = identity(3);
+console.log(result.internal[0]);
+console.log(result.internal[1]);
+console.log(result.internal[2]);
+console.log(result.internal[3]);
+console.log(result.internal[4]);
+console.log(result.internal[5]);
