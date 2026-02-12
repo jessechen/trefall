@@ -1,6 +1,6 @@
-# Sourdough
+# Trefall
 
-## A starter project template
+## Triangular Abelian sandpiles
 
 One sentence of background information goes here.
 
@@ -9,7 +9,7 @@ Production
 
 TBDeployed
 
-~~[GitHub Pages](https://jessechen.github.io/sourdough)~~
+~~[GitHub Pages](https://jessechen.github.io/trefall)~~
 
 Prior Art
 ---------
