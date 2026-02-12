@@ -49,21 +49,21 @@ class Grid {
     }
 
     neighbors(coords) {
-        const result = [];
+        let result = [];
         if (!this.isInside(coords)) {
             console.error(`Neighborhood of ${coords} is not inside!`)
             return result;
         }
         if (!!coords.w) {
-            if (this.isInside(new Coords(coords.x, coords.y, 0))) { result.push(new Coords(coords.x, coords.y, 0)); }
-            if (this.isInside(new Coords(coords.x + 1, coords.y, 0))) { result.push(new Coords(coords.x + 1, coords.y, 0)); }
-            if (this.isInside(new Coords(coords.x, coords.y + 1, 0))) { result.push(new Coords(coords.x, coords.y + 1, 0)); }
+            result = [new Coords(coords.x, coords.y, 0),
+                new Coords(coords.x + 1, coords.y, 0),
+                new Coords(coords.x, coords.y + 1, 0)];
         } else {
-            if (this.isInside(new Coords(coords.x, coords.y, 1))) { result.push(new Coords(coords.x, coords.y, 1)); }
-            if (this.isInside(new Coords(coords.x - 1, coords.y, 1))) { result.push(new Coords(coords.x - 1, coords.y, 1)); }
-            if (this.isInside(new Coords(coords.x, coords.y - 1, 1))) { result.push(new Coords(coords.x, coords.y - 1, 1)); }
+            result = [new Coords(coords.x, coords.y, 1),
+                new Coords(coords.x - 1, coords.y, 1),
+                new Coords(coords.x, coords.y - 1, 1)];
         }
-        return result;
+        return result.filter((coord) => this.isInside(coord));
     }
 
     step() {
@@ -97,8 +97,15 @@ class Grid {
         let iteration = 0;
         while(this.step()) {
             iteration++;
-            console.log(`iteration #${iteration}`);
+            console.log(`Iteration #${iteration}`);
         }
+    }
+
+    identity() {
+        // algorithm is collapse(2 * threshold - collapse(2 * threshold))
+        // source: https://fse.studenttheses.ub.rug.nl/21391/1/bMath_2020_DomanN.pdf
+
+        // TODO: IMPLEMENT ME
     }
 }
 
