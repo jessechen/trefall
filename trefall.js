@@ -1,3 +1,5 @@
+const TOPPLE_THRESHOLD = 3;
+
 class Coords {
     constructor(x, y, w) {
         this.x = x;
@@ -86,10 +88,10 @@ class Grid {
             return false;
         }
         const val = (this.get(coords));
-        if (val <= 3) {
+        if (val <= TOPPLE_THRESHOLD) {
             return false;
         } else {
-            this.set(val - 3, coords);
+            this.set(val - TOPPLE_THRESHOLD, coords);
             for (let neighbor of this.neighbors(coords)) {
                 this.increment(neighbor);
             }
