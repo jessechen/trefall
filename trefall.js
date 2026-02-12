@@ -48,6 +48,17 @@ class Grid {
         return true;
     }
 
+    allCoords() {
+        const result = [];
+        for (let j = 0; j < this.side * 2; j++) {
+            for (let i = 0; i < this.side * 2; i++) {
+                result.push(new Coords(i, j, 0));
+                result.push(new Coords(i, j, 1));
+            }
+        }
+        return result.filter((coord) => this.isInside(coord));
+    }
+
     neighbors(coords) {
         let result = [];
         if (!this.isInside(coords)) {
@@ -67,14 +78,7 @@ class Grid {
     }
 
     step() {
-        let dirty = false;
-        for (let j = 0; j < this.side * 2; j++) {
-            for (let i = 0; i < this.side * 2; i++) {
-                dirty ||= this.topple(new Coords(i, j, 0));
-                dirty ||= this.topple(new Coords(i, j, 1));
-            }
-        }
-        return dirty;
+        return this.allCoords().some((coord) => this.topple(coord));
     }
 
     topple(coords) {
