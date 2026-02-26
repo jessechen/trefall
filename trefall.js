@@ -122,6 +122,18 @@ class Grid {
     }
 }
 
+const identity = function(side) {
+    // algorithm is collapse(2 * threshold - collapse(2 * threshold))
+    // source: https://fse.studenttheses.ub.rug.nl/21391/1/bMath_2020_DomanN.pdf
+
+    const twicemax = new Grid(side, 2 * TOPPLE_THRESHOLD);
+    const subtrahend = new Grid(side, 2 * TOPPLE_THRESHOLD);
+    subtrahend.collapse();
+    twicemax.minus(subtrahend);
+    twicemax.collapse();
+    return twicemax;
+}
+
 const seed = function(amount, side) {
     const grid = new Grid(side);
     grid.set(amount, new Coords(2, 2, 1));
@@ -162,5 +174,5 @@ const draw = function(grid) {
     }
 }
 
-const result = bounds(3);
+const result = identity(3);
 draw(result);
