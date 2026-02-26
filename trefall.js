@@ -115,26 +115,21 @@ class Grid {
         let iteration = 0;
         while(this.step()) {
             iteration++;
-            if (iteration % 10 === 0) {
+            if (iteration % 100 === 0) {
                 console.log(`Iteration #${iteration}`)
             };
         }
     }
 }
 
-const identity = function(side) {
-    // algorithm is collapse(2 * threshold - collapse(2 * threshold))
-    // source: https://fse.studenttheses.ub.rug.nl/21391/1/bMath_2020_DomanN.pdf
-
-    const twicemax = new Grid(side, 2 * TOPPLE_THRESHOLD);
-    const subtrahend = new Grid(side, 2 * TOPPLE_THRESHOLD);
-    subtrahend.collapse();
-    twicemax.minus(subtrahend);
-    twicemax.collapse();
-    return twicemax;
+const seed = function(amount, side) {
+    const grid = new Grid(side);
+    grid.set(amount, new Coords(2, 2, 1));
+    grid.collapse();
+    return grid;
 }
 
-const result = identity(3);
+const result = seed(200, 3);
 console.log(result.internal[0]);
 console.log(result.internal[1]);
 console.log(result.internal[2]);
