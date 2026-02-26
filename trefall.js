@@ -156,9 +156,9 @@ const draw = function(grid) {
     const ctx = document.getElementById("canvas").getContext("2d");
     const up = new Path2D("M11 0L22 19H0Z");
     const down = new Path2D("M-11 0H11L0 19Z");
-    const zero = "#000";
-    const one = "#444";
-    const two = "#888";
+    const zero = "#3d5a80";
+    const one = "#98c1d9";
+    const two = "#e0fbfc";
     for (let coord of grid.allCoords()) {
         ctx.save();
         if (grid.get(coord) === 0) {
@@ -174,5 +174,5 @@ const draw = function(grid) {
     }
 }
 
-const result = identity(3);
+const result = identity(9);
 draw(result);
