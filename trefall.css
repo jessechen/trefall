@@ -10,3 +10,7 @@ body, input, button {
 *, *:before, *:after {
     box-sizing: inherit;
 }
+
+.canvas {
+
+}

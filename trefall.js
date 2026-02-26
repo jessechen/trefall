@@ -129,10 +129,38 @@ const seed = function(amount, side) {
     return grid;
 }
 
-const result = seed(200, 3);
-console.log(result.internal[0]);
-console.log(result.internal[1]);
-console.log(result.internal[2]);
-console.log(result.internal[3]);
-console.log(result.internal[4]);
-console.log(result.internal[5]);
+const bounds = function(side) {
+    const grid = new Grid(side);
+    for (let coord of grid.allCoords()) {
+        grid.set(1, coord);
+    }
+    return grid;
+}
+
+// Rational estimate for sqrt(3) is 19/11 accurate to about 0.1%
+// so side length = 22 and height = 19
+// Axis vectors are i = (22, 0) and j = (11, 19)
+const draw = function(grid) {
+    const ctx = document.getElementById("canvas").getContext("2d");
+    const up = new Path2D("M11 0L22 19H0Z");
+    const down = new Path2D("M-11 0H11L0 19Z");
+    const zero = "#000";
+    const one = "#444";
+    const two = "#888";
+    for (let coord of grid.allCoords()) {
+        ctx.save();
+        if (grid.get(coord) === 0) {
+            ctx.fillStyle = zero;
+        } else if (grid.get(coord) === 1) {
+            ctx.fillStyle = one;
+        } else {
+            ctx.fillStyle = two;
+        }
+        ctx.translate(22 * coord.x + 11 * coord.y, 19 * coord.y);
+        ctx.fill(coord.w ? up : down);
+        ctx.restore();
+    }
+}
+
+const result = bounds(3);
+draw(result);
