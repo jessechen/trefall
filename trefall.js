@@ -12,12 +12,13 @@ class Coords {
     }
 }
 
-class Grid {
-    constructor(side, initialValue = 0) {
-        this.side = side;
+class TriangularGrid {
+    constructor(size, initialValue = 0) {
+        this.size = size;
+        // The internal representation is a doubled square grid
         this.internal = [];
-        for (let i = 0; i < side * 2; i++) {
-            this.internal[i] =  new Array(side * 4).fill(initialValue);
+        for (let i = 0; i < size * 2; i++) {
+            this.internal[i] =  new Array(size * 4).fill(initialValue);
         }
     }
 
@@ -51,21 +52,21 @@ class Grid {
 
     isInside(coords) {
         if (coords.x < 0) { return false; }
-        if (coords.x >= this.side * 2) { return false; }
+        if (coords.x >= this.size * 2) { return false; }
         if (coords.y < 0) { return false; }
-        if (coords.y >= this.side * 2) { return false; }
+        if (coords.y >= this.size * 2) { return false; }
         const q = coords.x + coords.y;
-        if (q < this.side - 1) { return false; }
-        if (q === this.side - 1) { return !!coords.w; }
-        if (q > this.side * 3 - 1) { return false; }
-        if (q === this.side * 3 - 1) { return !coords.w; }
+        if (q < this.size - 1) { return false; }
+        if (q === this.size - 1) { return !!coords.w; }
+        if (q > this.size * 3 - 1) { return false; }
+        if (q === this.size * 3 - 1) { return !coords.w; }
         return true;
     }
 
     allCoords() {
         const result = [];
-        for (let j = 0; j < this.side * 2; j++) {
-            for (let i = 0; i < this.side * 2; i++) {
+        for (let j = 0; j < this.size * 2; j++) {
+            for (let i = 0; i < this.size * 2; i++) {
                 result.push(new Coords(i, j, 0));
                 result.push(new Coords(i, j, 1));
             }
@@ -130,8 +131,8 @@ const identity = function(side) {
     // algorithm is collapse(2 * threshold - collapse(2 * threshold))
     // source: https://fse.studenttheses.ub.rug.nl/21391/1/bMath_2020_DomanN.pdf
 
-    const twicemax = new Grid(side, 2 * TOPPLE_THRESHOLD);
-    const subtrahend = new Grid(side, 2 * TOPPLE_THRESHOLD);
+    const twicemax = new TriangularGrid(side, 2 * TOPPLE_THRESHOLD);
+    const subtrahend = new TriangularGrid(side, 2 * TOPPLE_THRESHOLD);
     subtrahend.collapse();
     twicemax.minus(subtrahend);
     twicemax.collapse();
@@ -139,14 +140,14 @@ const identity = function(side) {
 }
 
 const seed = function(amount, side) {
-    const grid = new Grid(side);
+    const grid = new TriangularGrid(side);
     grid.set(amount, new Coords(11, 11, 1));
     grid.collapse();
     return grid;
 }
 
 const bounds = function(side) {
-    const grid = new Grid(side);
+    const grid = new TriangularGrid(side);
     for (let coord of grid.allCoords()) {
         grid.set(1, coord);
     }
