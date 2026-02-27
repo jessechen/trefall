@@ -41,6 +41,10 @@ class Grid {
         this.set(this.get(coords) + 1, coords);
     }
 
+    add(value, coords) {
+        this.set(this.get(coords) + value, coords);
+    }
+
     subtract(value, coords) {
         this.set(this.get(coords) - value, coords);
     }
@@ -136,7 +140,7 @@ const identity = function(side) {
 
 const seed = function(amount, side) {
     const grid = new Grid(side);
-    grid.set(amount, new Coords(2, 2, 1));
+    grid.set(amount, new Coords(11, 11, 1));
     grid.collapse();
     return grid;
 }
@@ -155,7 +159,9 @@ const down = new Path2D("M-11 0H11L0 19Z");
 const zero = "#3d5a80";
 const one = "#98c1d9";
 const two = "#e0fbfc";
+let grid;
 let playing = true;
+let time = performance.now();
 
 // Rational estimate for sqrt(3) is 19/11 accurate to about 0.1%
 // so side length = 22 and height = 19
@@ -177,9 +183,11 @@ const drawInitial = function(grid) {
 }
 
 const tick = function(millis) {
-    const blue = (Date.now() / 20) % 256;
-    ctx.fillStyle = `rgb(40,40,${blue})`
-    ctx.fillRect(0, 0, 100, 100);
+    const delta = millis - time;
+    grid.add(delta / 20, new Coords(11, 11, 1));
+    grid.collapse();
+    drawInitial(grid);
+    time = millis;
     if (playing) {
         requestAnimationFrame((millis) => tick(millis));
     }
@@ -193,6 +201,6 @@ const handleClick = function(evt) {
 }
 
 document.addEventListener("click", handleClick);
-const result = bounds(12);
-drawInitial(result);
+grid = bounds(12);
+drawInitial(grid);
 requestAnimationFrame((millis) => tick(millis));
