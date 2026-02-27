@@ -149,16 +149,18 @@ const bounds = function(side) {
     return grid;
 }
 
+const ctx = document.getElementById("canvas").getContext("2d", { alpha: false });
+const up = new Path2D("M11 0L22 19H0Z");
+const down = new Path2D("M-11 0H11L0 19Z");
+const zero = "#3d5a80";
+const one = "#98c1d9";
+const two = "#e0fbfc";
+let playing = true;
+
 // Rational estimate for sqrt(3) is 19/11 accurate to about 0.1%
 // so side length = 22 and height = 19
 // Axis vectors are i = (22, 0) and j = (11, 19)
-const draw = function(grid) {
-    const ctx = document.getElementById("canvas").getContext("2d");
-    const up = new Path2D("M11 0L22 19H0Z");
-    const down = new Path2D("M-11 0H11L0 19Z");
-    const zero = "#3d5a80";
-    const one = "#98c1d9";
-    const two = "#e0fbfc";
+const drawInitial = function(grid) {
     for (let coord of grid.allCoords()) {
         ctx.save();
         if (grid.get(coord) === 0) {
@@ -174,5 +176,23 @@ const draw = function(grid) {
     }
 }
 
-const result = identity(9);
-draw(result);
+const tick = function(millis) {
+    const blue = (Date.now() / 20) % 256;
+    ctx.fillStyle = `rgb(40,40,${blue})`
+    ctx.fillRect(0, 0, 100, 100);
+    if (playing) {
+        requestAnimationFrame((millis) => tick(millis));
+    }
+}
+
+const handleClick = function(evt) {
+    playing = !playing;
+    if (playing) {
+        requestAnimationFrame((millis) => tick(millis));
+    }
+}
+
+document.addEventListener("click", handleClick);
+const result = bounds(12);
+drawInitial(result);
+requestAnimationFrame((millis) => tick(millis));
