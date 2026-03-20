@@ -169,6 +169,7 @@ ctx.fillRect(0, 0, 800, 480);
 let grid;
 let playing = true;
 let time = performance.now();
+let fractionalSand = 0;
 let source = new Coords(11, 11, 1);
 
 // Rational estimate for sqrt(3) is 19/11 accurate to about 0.1%
@@ -194,7 +195,9 @@ const draw = function(grid) {
 
 const tick = function(millis) {
     const delta = millis - time;
-    grid.add(Math.ceil(delta / 20), source);
+    fractionalSand += delta / 20;
+    grid.add(Math.floor(fractionalSand), source);
+    fractionalSand -= Math.floor(fractionalSand);
     grid.collapse();
     draw(grid);
     time = millis;
