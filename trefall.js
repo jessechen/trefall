@@ -222,9 +222,12 @@ const handleMove = function(evt) {
 }
 
 const toGridCoords = function(cursorX, cursorY) {
-    const gridX = Math.floor(cursorX / 22) - Math.floor(cursorY / 38);
-    const gridY = Math.floor(cursorY / 19);
-    return new Coords(gridX, gridY, 0);
+    const q = ((cursorX + 11) / 22) - (cursorY / 38);
+    const r = cursorY / 19;
+    const gridX = Math.floor(q);
+    const gridY = Math.floor(r);
+    const gridW = q - Math.floor(q) + r - Math.floor(r) < 1 ? 0 : 1;
+    return new Coords(gridX, gridY, gridW);
 }
 
 document.addEventListener("click", handleClick);
