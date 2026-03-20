@@ -175,7 +175,7 @@ let source = new Coords(11, 11, 1);
 
 // Rational estimate for sqrt(3) is 19/11 accurate to about 0.1%
 // so side length = 22 and height = 19
-// Axis vectors are i = (22, 0) and j = (11, 19)
+// Axis vectors are i = (22, 11) and j = (0, 19)
 const drawInitial = function(grid) {
     for (let coord of grid.allCoords()) {
         ctx.save();
@@ -221,6 +221,8 @@ const handleMove = function(evt) {
     drawInitial(grid);
 }
 
+// Inverse of axis matrix is [[22 0][-38 19]]
+// We have to also add 11 to x because the down path shifts everything left 11 pixels
 const toGridCoords = function(cursorX, cursorY) {
     const q = ((cursorX + 11) / 22) - (cursorY / 38);
     const r = cursorY / 19;
