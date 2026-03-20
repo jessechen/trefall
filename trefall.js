@@ -146,9 +146,9 @@ const identity = function(side) {
     return twicemax;
 }
 
-const seed = function(amount, side) {
+const seed = function(amount, side, source) {
     const grid = new TriangularGrid(side);
-    grid.set(amount, new Coords(11, 11, 1));
+    grid.set(amount, source);
     grid.collapse();
     return grid;
 }
@@ -196,7 +196,7 @@ const drawInitial = function(grid) {
 
 const tick = function(millis) {
     const delta = millis - time;
-    grid.add(Math.ceil(delta / 20), new Coords(11, 11, 1));
+    grid.add(Math.ceil(delta / 20), source);
     grid.collapse();
     drawInitial(grid);
     time = millis;
