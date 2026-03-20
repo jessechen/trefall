@@ -213,7 +213,13 @@ const handleClick = function(evt) {
 }
 
 const handleMove = function(evt) {
-    console.log("moved");
+    source = toGridCoords(evt.offsetX, evt.offsetY);
+}
+
+const toGridCoords = function(cursorX, cursorY) {
+    const gridX = Math.floor(cursorX / 22) - Math.floor(cursorY / (418/11));
+    const gridY = Math.floor(cursorY / 19);
+    return new Coords(gridX, gridY, 0);
 }
 
 document.addEventListener("click", handleClick);
