@@ -146,14 +146,7 @@ const identity = function(side) {
     return twicemax;
 }
 
-const seed = function(amount, side, source) {
-    const grid = new TriangularGrid(side);
-    grid.set(amount, source);
-    grid.collapse();
-    return grid;
-}
-
-const bounds = function(side) {
+const init = function(side) {
     const grid = new TriangularGrid(side);
     for (let coord of grid.allCoords()) {
         grid.set(1, coord);
@@ -161,13 +154,16 @@ const bounds = function(side) {
     return grid;
 }
 
+// Color scheme is Winter Frost from 
+// https://coolors.co/palette/b8d8d8-7a9e9f-4f6367-eef5db-fe5f55
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d", { alpha: false });
 const up = new Path2D("M11 0L22 19H0Z");
 const down = new Path2D("M-11 0H11L0 19Z");
-const zero = "#3d5a80";
-const one = "#98c1d9";
-const two = "#e0fbfc";
+const zero = "#4f6367";
+const one = "#7a9e9f";
+const two = "#b8d8d8";
+const spout = "#eef5db";
 let grid;
 let playing = true;
 let time = performance.now();
@@ -180,7 +176,7 @@ const drawInitial = function(grid) {
     for (let coord of grid.allCoords()) {
         ctx.save();
         if (coord.equals(source)) {
-            ctx.fillStyle = "#f00";
+            ctx.fillStyle = spout;
         } else if (grid.get(coord) === 0) {
             ctx.fillStyle = zero;
         } else if (grid.get(coord) === 1) {
@@ -217,8 +213,8 @@ const handleMove = function(evt) {
     const coords = toGridCoords(evt.offsetX, evt.offsetY);
     if (grid.isInside(coords)) {
         source = coords;
+        drawInitial(grid);
     }
-    drawInitial(grid);
 }
 
 // Inverse of axis matrix is [[22 0][-38 19]]
@@ -234,6 +230,6 @@ const toGridCoords = function(cursorX, cursorY) {
 
 document.addEventListener("click", handleClick);
 canvas.addEventListener("mousemove", handleMove);
-grid = bounds(12);
+grid = init(12);
 drawInitial(grid);
 requestAnimationFrame((millis) => tick(millis));
