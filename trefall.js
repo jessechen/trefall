@@ -165,7 +165,7 @@ const spout = "#eef5db";
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d", { alpha: false });
 ctx.fillStyle = spout;
-ctx.fillRect(0, 0, 800, 480);
+ctx.fillRect(0, 0, 792, 456);
 let grid;
 let playing = true;
 let time = performance.now();
