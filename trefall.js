@@ -172,7 +172,7 @@ let source = new Coords(11, 11, 1);
 // Rational estimate for sqrt(3) is 19/11 accurate to about 0.1%
 // so side length = 22 and height = 19
 // Axis vectors are i = (22, 11) and j = (0, 19)
-const drawInitial = function(grid) {
+const draw = function(grid) {
     for (let coord of grid.allCoords()) {
         ctx.save();
         if (coord.equals(source)) {
@@ -194,7 +194,7 @@ const tick = function(millis) {
     const delta = millis - time;
     grid.add(Math.ceil(delta / 20), source);
     grid.collapse();
-    drawInitial(grid);
+    draw(grid);
     time = millis;
     if (playing) {
         requestAnimationFrame((millis) => tick(millis));
@@ -213,7 +213,7 @@ const handleMove = function(evt) {
     const coords = toGridCoords(evt.offsetX, evt.offsetY);
     if (grid.isInside(coords)) {
         source = coords;
-        drawInitial(grid);
+        draw(grid);
     }
 }
 
@@ -231,5 +231,5 @@ const toGridCoords = function(cursorX, cursorY) {
 document.addEventListener("click", handleClick);
 canvas.addEventListener("mousemove", handleMove);
 grid = init(12);
-drawInitial(grid);
+draw(grid);
 requestAnimationFrame((millis) => tick(millis));
