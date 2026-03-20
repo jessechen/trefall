@@ -55,6 +55,7 @@ class TriangularGrid {
     }
 
     isInside(coords) {
+        if (!coords) { return false; }
         if (coords.x < 0) { return false; }
         if (coords.x >= this.size * 2) { return false; }
         if (coords.y < 0) { return false; }
@@ -213,11 +214,15 @@ const handleClick = function(evt) {
 }
 
 const handleMove = function(evt) {
-    source = toGridCoords(evt.offsetX, evt.offsetY);
+    const coords = toGridCoords(evt.offsetX, evt.offsetY);
+    if (grid.isInside(coords)) {
+        source = coords;
+    }
+    drawInitial(grid);
 }
 
 const toGridCoords = function(cursorX, cursorY) {
-    const gridX = Math.floor(cursorX / 22) - Math.floor(cursorY / (418/11));
+    const gridX = Math.floor(cursorX / 22) - Math.floor(cursorY / 38);
     const gridY = Math.floor(cursorY / 19);
     return new Coords(gridX, gridY, 0);
 }
