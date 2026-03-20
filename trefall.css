@@ -5,13 +5,17 @@ body {
 body, input, button {
     font-family: Seravek, 'Gill Sans Nova', Ubuntu, Calibri, 'DejaVu Sans', source-sans-pro, sans-serif;
     font-size: 1rem;
-    background-color: #eef5db;
+    margin: 0;
 }
 
 *, *:before, *:after {
     box-sizing: inherit;
 }
 
-#canvas {
+main {
+    background-color: #eef5db;
     cursor: pointer;
+    display: grid;
+    place-content: center;
+    height: 100vh;
 }
