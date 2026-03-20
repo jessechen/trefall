@@ -156,14 +156,16 @@ const init = function(side) {
 
 // Color scheme is Winter Frost from 
 // https://coolors.co/palette/b8d8d8-7a9e9f-4f6367-eef5db-fe5f55
-const canvas = document.getElementById("canvas");
-const ctx = canvas.getContext("2d", { alpha: false });
 const up = new Path2D("M11 0L22 19H0Z");
 const down = new Path2D("M-11 0H11L0 19Z");
 const zero = "#4f6367";
 const one = "#7a9e9f";
 const two = "#b8d8d8";
 const spout = "#eef5db";
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d", { alpha: false });
+ctx.fillStyle = spout;
+ctx.fillRect(0, 0, 800, 480);
 let grid;
 let playing = true;
 let time = performance.now();
