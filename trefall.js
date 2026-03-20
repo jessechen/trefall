@@ -97,7 +97,9 @@ class TriangularGrid {
     }
 
     step() {
-        return this.allCoords().some((coord) => this.topple(coord));
+        return this.allCoords()
+            .map((coord) => this.topple(coord))
+            .some((dirty) => dirty === true);
     }
 
     topple(coords) {
@@ -185,7 +187,7 @@ const drawInitial = function(grid) {
 
 const tick = function(millis) {
     const delta = millis - time;
-    grid.add(delta / 20, new Coords(11, 11, 1));
+    grid.add(Math.ceil(delta / 20), new Coords(11, 11, 1));
     grid.collapse();
     drawInitial(grid);
     time = millis;
@@ -197,6 +199,7 @@ const tick = function(millis) {
 const handleClick = function(evt) {
     playing = !playing;
     if (playing) {
+        time = performance.now();
         requestAnimationFrame((millis) => tick(millis));
     }
 }
