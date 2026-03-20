@@ -10,6 +10,10 @@ class Coords {
     toString() {
         return `(${this.x}, ${this.y}, ${this.w})`;
     }
+
+    equals(other) {
+        return this.x === other.x && this.y === other.y && this.w === other.w;
+    }
 }
 
 class TriangularGrid {
@@ -156,7 +160,8 @@ const bounds = function(side) {
     return grid;
 }
 
-const ctx = document.getElementById("canvas").getContext("2d", { alpha: false });
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d", { alpha: false });
 const up = new Path2D("M11 0L22 19H0Z");
 const down = new Path2D("M-11 0H11L0 19Z");
 const zero = "#3d5a80";
@@ -165,6 +170,7 @@ const two = "#e0fbfc";
 let grid;
 let playing = true;
 let time = performance.now();
+let source = new Coords(11, 11, 1);
 
 // Rational estimate for sqrt(3) is 19/11 accurate to about 0.1%
 // so side length = 22 and height = 19
@@ -172,7 +178,9 @@ let time = performance.now();
 const drawInitial = function(grid) {
     for (let coord of grid.allCoords()) {
         ctx.save();
-        if (grid.get(coord) === 0) {
+        if (coord.equals(source)) {
+            ctx.fillStyle = "#f00";
+        } else if (grid.get(coord) === 0) {
             ctx.fillStyle = zero;
         } else if (grid.get(coord) === 1) {
             ctx.fillStyle = one;
@@ -204,7 +212,12 @@ const handleClick = function(evt) {
     }
 }
 
+const handleMove = function(evt) {
+    console.log("moved");
+}
+
 document.addEventListener("click", handleClick);
+canvas.addEventListener("mousemove", handleMove);
 grid = bounds(12);
 drawInitial(grid);
 requestAnimationFrame((millis) => tick(millis));
